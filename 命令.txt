@@ -1,0 +1,63 @@
+uwsgi --ini uwsgi.ini             # 启动
+uwsgi --reload uwsgi.pid          # 重启
+uwsgi --stop uwsgi.pid            # 关闭
+
+停止 nginx
+
+$ sudo nginx -s stop
+平滑启动 nginx
+
+sudo nginx -s reload
+
+cd /usr/local/nginx
+
+
+328922ce1631284d5fa0996bd7cd9a2a
+
+
+
+mysql:
+sudo service mysql start / stop /restart
+mysql -u root -p 进入mysql
+show databases;
+show tables;
+create database XXX;
+
+create table onshow
+(
+fid int not null auto_increment primary key,
+fname varchar(100) not null,
+fdate varchar(12) not null,
+ftype varchar(40),
+fcountry varchar(40),
+fexpect varchar(10)  not null,
+fstar varchar(10)
+);
+
+create table fdetail
+(
+fid int not null primary key,
+fname varchar(100) not null,
+fdirector varchar(40),
+fwriter varchar(40),
+factor varchar(100),
+flong varchar(10),
+foreign key (fid) references onshow (fid)
+);
+
+create table user
+(
+uid int not null auto_increment primary key,
+uname varchar(100) not null
+);
+
+create table uexpt
+(
+fid int not null,
+uid int not null,
+primary key (fid,uid),
+foreign key (fid) references onshow (fid),
+foreign key (uid) references user (uid)
+);
+
+https://api.douban.com/v2/book/1220562
