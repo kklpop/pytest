@@ -27,7 +27,7 @@ create table onshow
 (
 fid int not null auto_increment primary key,
 fname varchar(100) not null,
-fdate varchar(12) not null,
+fshowdate varchar(12) not null,
 ftype varchar(40),
 fcountry varchar(40),
 fexpect varchar(10)  not null,
@@ -42,6 +42,8 @@ fdirector varchar(40),
 fwriter varchar(40),
 factor varchar(100),
 flong varchar(10),
+fnameE varchar(100),
+fblueraydate varchar(12),
 foreign key (fid) references onshow (fid)
 );
 

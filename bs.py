@@ -1,8 +1,10 @@
 # coding: utf-8
 import requests
 from bs4 import BeautifulSoup
-import re
+from urllib.parse import urlsplit
+
 URL='https://movie.douban.com/coming'
+DOUBANAPI='https://api.douban.com/v2/movie'
 def get_html(url,writeflag):           #writeflag数组 [是否写入标志] [写入文件名]
     #url = 'https://movie.douban.com/coming'
     headers = {
@@ -47,8 +49,8 @@ def analyze_filmscoming():
     with open('td.txt', "w") as f:
         f.write(wr)
 
-def get_filmdetail(url):
-    filmsdetail=('n','')
+#def get_filmdetail(url):
+    '''filmsdetail=('n','')
     html=get_html(url,filmsdetail)
     fsoup = BeautifulSoup(html, 'lxml')
     #print(fdetail.find('h1',name='span').string)
@@ -58,8 +60,8 @@ def get_filmdetail(url):
         fdetail=fdetail+str(child.string).strip()
     print(fdetail)
 
-    '''for i in fsoup.find_all(re.compile('span')):
-        print(i.text)'''
+    for i in fsoup.find_all(re.compile('span')):
+        print(i.text)
 
     info=fsoup.find(id='info')
     for d in info:
@@ -68,7 +70,7 @@ def get_filmdetail(url):
         #print (type(i))
         #for a in i.find_all('a'):
             #print(a.string)
-    '''for child in fsoup.find(id='info'):
+    for child in fsoup.find(id='info'):
         if str(type(child))!='<class \'bs4.element.NavigableString\'>':
             for span in child.children:
                 if str(type(span)) != '<class \'bs4.element.NavigableString\'>':
@@ -78,7 +80,6 @@ def get_filmdetail(url):
                     r=span.find_all(name='a')
                     print(r)
                     print (type(r))'''
-
                 #print(type(span))
         #print(str(child.string).strip())
         #print(type(child))
@@ -86,13 +87,14 @@ def get_filmdetail(url):
 
 
 if __name__ == "__main__":
-    '''filmscoming =('y','coming.txt')
+    filmscoming =('y','coming.txt')
 
     get_html(URL,filmscoming)
-    analyze_filmscoming()'''
-    get_filmdetail('https://movie.douban.com/subject/27605698/')
+    analyze_filmscoming()
+    #get_filmdetail('https://movie.douban.com/subject/27605698/')
 
-'''from urllib.parse import urlsplit
-result = urlsplit('https://movie.douban.com/subject/27605698/')
-print (result)          https://api.douban.com/v2/movie/subject/1764796'''
-'''test'''
+
+    result = urlsplit('https://movie.douban.com/subject/27605698/')
+    print (result.path)
+    '''https://api.douban.com/v2/movie/subject/1764796'''
+    '''test'''
