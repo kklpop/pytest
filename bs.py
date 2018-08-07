@@ -2,7 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlsplit
-
+import re
 URL='https://movie.douban.com/coming'
 DOUBANAPI='https://api.douban.com/v2/movie'
 def get_html(url,writeflag):           #writeflag数组 [是否写入标志] [写入文件名]
@@ -49,8 +49,8 @@ def analyze_filmscoming():
     with open('td.txt', "w") as f:
         f.write(wr)
 
-#def get_filmdetail(url):
-    '''filmsdetail=('n','')
+def get_filmdetail(url):
+    filmsdetail=('n','')
     html=get_html(url,filmsdetail)
     fsoup = BeautifulSoup(html, 'lxml')
     #print(fdetail.find('h1',name='span').string)
@@ -60,17 +60,24 @@ def analyze_filmscoming():
         fdetail=fdetail+str(child.string).strip()
     print(fdetail)
 
-    for i in fsoup.find_all(re.compile('span')):
-        print(i.text)
+    '''for i in fsoup.find_all(re.compile('span')):
+        print(i.text)'''
 
     info=fsoup.find(id='info')
-    for d in info:
-        e=d.find('span',{"class":"pl"})
-        print(e)
-        #print (type(i))
-        #for a in i.find_all('a'):
-            #print(a.string)
-    for child in fsoup.find(id='info'):
+
+    #for d in info:
+    #e=re.findall('rel="v:directedBy">(.*?)</a>',str(info))
+    print("导演："+','.join(re.findall('rel="v:directedBy">(.*?)</a>',str(info))))
+    print("编剧：" + ','.join(re.findall('<a href=".*?\/\">(.*?)</a>', str(info))))
+    print("演员：" + ','.join(re.findall('<a.*?rel="v:starring">(.*?)</a>', str(info))))
+    print("片长：" + ','.join(re.findall('property="v:runtime".*?>(.*?)</span>', str(fsoup))))
+    #print("又名：" + ','.join(re.findall('\:</span>(.*?)<br>', str(info))))
+
+
+    #print (type(i))
+    #for a in i.find_all('a'):
+    #print(a.string)
+    '''for child in fsoup.find(id='info'):
         if str(type(child))!='<class \'bs4.element.NavigableString\'>':
             for span in child.children:
                 if str(type(span)) != '<class \'bs4.element.NavigableString\'>':
@@ -87,14 +94,14 @@ def analyze_filmscoming():
 
 
 if __name__ == "__main__":
-    filmscoming =('y','coming.txt')
+    '''filmscoming =('y','coming.txt')
 
     get_html(URL,filmscoming)
-    analyze_filmscoming()
-    #get_filmdetail('https://movie.douban.com/subject/27605698/')
+    analyze_filmscoming()'''
+    get_filmdetail('https://movie.douban.com/subject/27605698/')
 
 
-    result = urlsplit('https://movie.douban.com/subject/27605698/')
-    print (result.path)
+    #result = urlsplit('https://movie.douban.com/subject/27605698/')
+    #print (result.path)
     '''https://api.douban.com/v2/movie/subject/1764796'''
     '''test'''

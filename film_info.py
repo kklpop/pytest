@@ -26,11 +26,12 @@ class FilmInfo:
     def get_html(self, url, writeflag):  # writeflag数组 [是否写入标志] [写入文件名]
         # url = 'https://movie.douban.com/coming'
         headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0',
+            'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
             'Accept - Language': 'zh - CN, zh;q = 0.8, en - US;q = 0.5, en;q = 0.3'
         }
         try:
-            r = requests.get(url, headers=headers,timeout=10,allow_redirects=False)
+            s = requests.Session()
+            r = s.get(url, headers=headers,timeout=10,allow_redirects=False)
         except Exception as e:
             print(e)
         if writeflag[0] == 'y':
@@ -40,7 +41,7 @@ class FilmInfo:
             except Exception as e:
                 print(e + "写入错误")
         elif writeflag[0] == 'n':
-            return r.text
+            return r.headers['location'] # text
 
     def analyze_filmscoming(self,fpath):
         try:
