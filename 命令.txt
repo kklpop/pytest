@@ -20,21 +20,68 @@ mysql:
 sudo service mysql start / stop /restart
 mysql -u root -p 进入mysql
 show databases;
+use XXX    进入某数据库
 show tables;
 create database XXX;
-
-create table onshow
+drop database/table XXX;
+describe 表名;
+insert into tableName(id,name...) values('1','admin',...);
+create table filminfo
 (
 fid int not null auto_increment primary key,
 fname varchar(100) not null,
-fshowdate varchar(12) not null,
+fdate date not null,
+foutdate varchar(12),
+findate varchar(12),
 ftype varchar(40),
 fcountry varchar(40),
 fexpect varchar(10)  not null,
-fstar varchar(10)
+fstar varchar(10),
+fdirector varchar(40),
+fwriter varchar(40),
+factor varchar(100),
+flong varchar(10),
+fnameE varchar(100),
+fblueraydate varchar(12),
+fsummary varchar(1000),
+fpicsrc varchar(200)
 );
 
-create table fdetail
+
+insert into fonshow(fname,fshowdate,ftype,fcountry,fexpect,fstar,fdirector,fwriter,factor,flong,fnameE,fblueraydate,fsummary) values('影名','2018-01-02','恐怖','CN','100人','4星','director','writer','actor','120','ename','09-19','.....summary.....');
+
+drop procedure if exists pr_update_filminfo_table;
+delimiter //
+create procedure pr_update_filminfo_table(IN p_fname varchar(100), IN p_fdate varchar(10),IN p_foutdate varchar(12),IN p_findate varchar(12),IN p_ftype varchar(40),IN p_fcountry varchar(40), IN p_fexpect varchar(10),IN p_fstar varchar(10),IN p_fdirector varchar(40),IN p_fwriter varchar(40),IN p_factor varchar(100),IN p_flong varchar(10),IN p_fnameE varchar(100),IN p_fblueraydate varchar(12),IN p_fsummary varchar(1000),IN p_fpicsrc varchar(200))
+begin
+declare fne varchar(100);
+select fname into fne from filminfo where fname=p_fname;
+if fne is null then
+    insert into filminfo(fname,fdate,foutdate,findate,ftype,fcountry,fexpect,fstar,fdirector,fwriter,factor,flong,fnameE,fblueraydate,fsummary,fpicsrc) values(p_fname,p_fdate,p_foutdate,p_findate,p_ftype,p_fcountry,p_fexpect,p_fstar,p_fdirector,p_fwriter,p_factor,p_flong,p_fnameE,p_fblueraydate,p_fsummary,p_fpicsrc);
+else
+    update filminfo set fdate=p_fdate,foutdate=p_foutdate,findate=p_findate,ftype=p_ftype,fcountry=p_fcountry,fexpect=p_fexpect,fstar=p_fstar,fdirector=p_fdirector,fwriter=p_fwriter,factor=p_factor,flong=p_flong,fnameE=p_fnameE,fblueraydate=p_fblueraydate,fsummary=p_fsummary,fpicsrc=p_fpicsrc where fname=p_fname;
+end if;
+end;//
+delimiter ;
+
+call pr_update_filminfo_table('影名','2018-02-01','2018-02','2018-02-03','140人','5star','one,two,three...','p','p','p','p','p','p','p','p','p');
+call update_onshow_table('影2','08-09','10人','3star','b,a,c,d...');
+drop procedure sp_name//
+
+delimiter //
+create procedure update_onshow_table(IN fnam VARCHAR(100), IN fshowdat VARCHAR(12), IN fexpec VARCHAR(10),IN fsta VARCHAR(10),IN facto VARCHAR(100))
+begin
+declare fne varchar(100);
+select fname into fne from fonshow where fname=fnam;
+if fne is null then
+    insert into fonshow(fname,fshowdate,fexpect,fstar,factor) values(fnam,fshowdat,fexpec,fsta,facto);
+else
+    update fonshow set fshowdate=fshowdat,fexpect=fexpec,fstar=fsta,factor=facto where fname=fnam;
+end if;
+end;//
+delimiter ;
+
+create table onshowfdetail
 (
 fid int not null primary key,
 fname varchar(100) not null,
@@ -44,6 +91,8 @@ factor varchar(100),
 flong varchar(10),
 fnameE varchar(100),
 fblueraydate varchar(12),
+fsummary varchar(1000),
+fpicsrc varchar(200),
 foreign key (fid) references onshow (fid)
 );
 
@@ -62,4 +111,7 @@ foreign key (fid) references onshow (fid),
 foreign key (uid) references user (uid)
 );
 
-https://api.douban.com/v2/book/1220562
+
+
+
+https://api.douban.com/v2/movie/subject/1764796
