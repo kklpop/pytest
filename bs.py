@@ -171,7 +171,7 @@ if __name__ == "__main__":
 
     get_html(URL,filmscoming)
     analyze_filmscoming_indouban()'''
-    date=get_filmdetail_indouban('https://movie.douban.com/subject/30122633/')
+    '''date=get_filmdetail_indouban('https://movie.douban.com/subject/30122633/')
     ix=date.find('(中国大陆)')
     i=date.find(',')
     if ix!=-1:
@@ -179,8 +179,13 @@ if __name__ == "__main__":
         if i!=-1:
             print('国外上映：'+date[i+1:i+11])
     else:
-        print('国外上映：')
-
+        print('国外上映：')'''
+    st='2018-02-01'
+    if st.count('-')==1 and st[-2:]=='02':
+        st=st+'-28'
+    elif st.count('-')==1:
+        st=st+'-30'
+    print(st)
     '''for y in range(2018,2020):
         for m in range(1,13):
             year='year='+str(y)
