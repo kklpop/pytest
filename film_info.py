@@ -147,6 +147,7 @@ class FilmInfoMethod:
             finfo.fsummary=summary.text.strip()
             finfo.fpicsrc=picsrc.get('src')
             finfo.fdate=','.join(re.findall('property="v:initialReleaseDate">(.*?)\(.*\)', str(info)))
+            finfo.fdate=add_daytime(finfo.fdate)
             datetmp = ','.join(re.findall('property="v:initialReleaseDate">(.*?)</span>', str(info)))
             ix = datetmp.find('(中国大陆)')      #获得国内外上映时间
             i = datetmp.find(',')
@@ -189,7 +190,12 @@ class FilmInfoMethod:
         # data = data.strip(',')
         list = data.split()
         return (list[2] + '-' + month[list[0]] + '-' + list[1].strip(','))
-
+def add_daytime(st):
+    if st.count('-')==1 and st[-2:]=='02':
+        st=st+'-28'
+    elif st.count('-')==1:
+        st=st+'-30'
+    return st
 def get_fonshow_info(finfo):
     try:
         with open('onshow.txt', "r") as f:
